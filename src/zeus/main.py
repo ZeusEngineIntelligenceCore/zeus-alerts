@@ -18,11 +18,12 @@ async def async_main() -> None:
     """
     Initializes and runs the Telegram bot application.
     """
-    app = ApplicationBuilder().token(TOKEN).build() # type: ignore
+    app = ApplicationBuilder().token(str(TOKEN)).build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
-    print("Bot is running… send /start in Telegram.")
+    print("Bot is running... send /start in Telegram.")
+    # Update.ALL_TYPES may not be fully recognized by Pyright due to dynamic typing in telegram library.
     await app.run_polling(allowed_updates=Update.ALL_TYPES) # pyright: ignore[reportGeneralTypeIssues]
 
 if __name__ == "__main__":
